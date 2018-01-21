@@ -1,0 +1,14 @@
+{
+  "name": "xwing-csv",
+  "homepage": "https://github.com/rocketshipgames/xwing-csv",
+  "_release": "163753d793",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "163753d7930d3d0f8bb17051ce65385dcba1ea3c"
+  },
+  "_source": "https://github.com/rocketshipgames/xwing-csv.git",
+  "_target": "*",
+  "_originalSource": "rocketshipgames/xwing-csv",
+  "_direct": true
+}

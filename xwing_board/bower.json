@@ -1,0 +1,21 @@
+{
+  "name": "xwing_board",
+  "authors": [
+    "Djogo Patrão <djogopatrao@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "3",
+    "xwing-card-images": "^0.16.0"
+  }
+}

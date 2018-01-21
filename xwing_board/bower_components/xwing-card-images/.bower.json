@@ -1,0 +1,29 @@
+{
+  "name": "xwing-card-images",
+  "homepage": "https://github.com/voidstate/xwing-card-images",
+  "version": "0.16.0",
+  "authors": [
+    "Fergus Hadley <ferg@voidstate.com>"
+  ],
+  "description": "A collection of all game cards for use in the X-Wing Miniatures Game",
+  "main": "",
+  "moduleType": [],
+  "keywords": [
+    "x-wing",
+    "miniatures"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*"
+  ],
+  "_release": "0.16.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.16.0",
+    "commit": "263ad40161dddd7ec2dcc469d9ee8721755b9795"
+  },
+  "_source": "https://github.com/voidstate/xwing-card-images.git",
+  "_target": "^0.16.0",
+  "_originalSource": "xwing-card-images",
+  "_direct": true
+}

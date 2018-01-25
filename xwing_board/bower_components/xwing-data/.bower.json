@@ -1,0 +1,26 @@
+{
+  "name": "xwing-data",
+  "version": "0.61.0",
+  "homepage": "https://github.com/guidokessels/xwing-data",
+  "authors": [
+    "Guido Kessels <mail@guidokessels.com>"
+  ],
+  "description": "An easy-to-use collection of data and images from X-Wing: The Miniatures Game by Fantasy Flight Games.",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "package.json",
+    "node_modules",
+    "schemas",
+    "tests"
+  ],
+  "_release": "0.61.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.61.0",
+    "commit": "7078e544769d117534e295b6b4f9239af4d186cd"
+  },
+  "_source": "https://github.com/guidokessels/xwing-data.git",
+  "_target": "^0.61.0",
+  "_originalSource": "xwing-data"
+}

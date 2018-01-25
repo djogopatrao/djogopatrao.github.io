@@ -16,6 +16,6 @@
   ],
   "dependencies": {
     "bootstrap": "3",
-    "xwing-card-images": "^0.16.0"
+    "xwing-data": "^0.61.0"
   }
 }

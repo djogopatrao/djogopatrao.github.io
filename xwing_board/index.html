@@ -76,6 +76,7 @@
             <div class='row'>
             <div class='col-xs-12'>
             <h2>Board</h2>
+            <span id='pontuacao'></span>
             <div class='container'/>
             </div>
             </div>
@@ -94,6 +95,30 @@
 
     <!-- Menu Toggle Script -->
     <script>
+    var pilots,upgrades,ships;
+    var shield_image = './img/s.png';
+    var hull_image = './img/h.png';
+    var base_url = './bower_components/xwing-data/images/';
+    var upgrade_card_back_image = './img/$type_back.png';
+
+    $.ajax( './bower_components/xwing-data/data/pilots.js', {
+        complete: function(x) {
+            pilots = jQuery.parseJSON(x.responseText);
+        }
+    });
+
+    $.ajax( './bower_components/xwing-data/data/upgrades.js', {
+        complete: function(x) {
+            upgrades = jQuery.parseJSON(x.responseText);
+        }
+    });
+
+    $.ajax( './bower_components/xwing-data/data/ships.js', {
+        complete: function(x) {
+            ships = jQuery.parseJSON(x.responseText);
+        }
+    });
+
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
@@ -109,15 +134,11 @@
         return st.toLowerCase().replace( myRegExp, '' );
     }
 
-    var card_images;
-    var shield_image = './img/s.png';
-    var hull_image = './img/h.png';
-    var upgrade_card_back_image = './img/$type_back.png';
-    $.ajax( './cards.json', {
-        complete: function(x) {
-            card_images = jQuery.parseJSON(x.responseText);
-        }
-    });
+    function myFind( data, what, property='xws' ) {
+        var results = [];
+        $(data).each( function(i,a) { if ( a[property]==what ) { results.push(a); }; } );
+        return results;
+    }
 
     function findLineForShipId( shipId ) {
         return $('.row[ship-id='+shipId+']');
@@ -239,39 +260,67 @@
         e.preventDefault();
         var errors = [];
         var squad_text = $('#squad1').val();
-        var ships = squad_text.split("\n");
+        var squad_ships = squad_text.split("\n");
         var squad_points = 0;
-        $(ships).each(function(id,s){
+        $(squad_ships).each(function(id,s){
             var myRegexp = /(.*?)(?:\ \+\ (.*))?\ \((.*)\)/g;
             var match = myRegexp.exec(s);
             var pilot = match[1]
-            var upgrades = []
+            var ship_upgrades = []
             if ( match[2] ) {
-                upgrades = match[2].split("\+")
+                ship_upgrades = match[2].split("\+")
             }
             var points = match[3]*1;
             squad_points += points
 
-            if ( ! card_images.pilots[ canonicalize(pilot) ] ) {
+            if ( ! myFind( pilots, canonicalize(pilot) ) ) {
                 errors.push( "Piloto "+pilot+" não esta cadastrado!" );
             } else {
 
-                var pilot_image = card_images.pilots[ canonicalize(pilot) ].file;
-                var ship = card_images.pilots[ canonicalize(pilot) ].ship;
+                var this_ship_points = 0;
+                var pilot_object = myFind( pilots, canonicalize(pilot) );
+                var ip = 0; // index of pilot
+                var all_upgrades = [];
+                var upgrade_points = 0;
+
+                // get all upgrades
+                $(ship_upgrades).each(function(j,u) {
+                    var uo = myFind(upgrades, canonicalize(u));
+                    all_upgrades.push( uo );
+                    if ( ! uo ) {
+                        errors.push( "Upgrade '"+u+"' não cadastrado!" );
+                    }
+                    upgrade_points += uo[0].points;
+                });
+
+                if ( $(pilot_object).length > 0 ) {
+                    ip = -1;
+                    $(pilot_object).each(function(i,p){ if ( p.points + upgrade_points == points ) { ip = i;} });
+                    if ( ip == -1 ) {
+                        alert("Pontos declarados nao correspondem ! Escolhendo qualquer versao do "+pilot);
+                        ip = 0;
+                    }
+                }
+                this_ship_points = pilot_object[ip].points + upgrade_points;
+
+                var pilot_image = base_url + pilot_object[ip].image;
+                var ship_object = myFind( ships, canonicalize(pilot_object[ip].ship) );
                 var shipId = "ship-"+id;
 
                 var html = "";
 
-                if ( card_images.ships[ ship ] ) {
-                    html += "<div class='row' ship-id='$id' ship-shields='$shi' ship-hull='$hul' ship-alive='1'>"
+                if ( ship_object ) {
+                    html += "<div class='row' ship-id='$id' ship-shields='$shi' ship-hull='$hul' points='$poi'  ship-alive='1'>"
                             .replace("$id",shipId)
-                            .replace ("$shi",card_images.ships[ ship ].shi)
-                            .replace('$hul',card_images.ships[ ship ].hul );
+                            .replace ("$shi",ship_object[0].shields)
+                            .replace('$hul',ship_object[0].hull )
+                            .replace('$poi',this_ship_points);
                 } else {
-                    errors.push( "Nave "+ship+" não está cadastrada!");
+                    errors.push( "Nave "+pilot_object[0].ship+" não está cadastrada!");
                     html += "<div class='row' ship-id='$id' ship-shields='1' ship-hull='1' ship-alive='1'>";
                 }
                 html += '<div class="col-xs-2">';
+                html += '<span class="points">Pontuação da nave: $poi</span>'.replace("$poi",this_ship_points);
                 html += '<img class="img img-fluid img-pilot" ship-id="$id" src="$" style="width: 100%"/>'.replace("$id",shipId).replace('$',pilot_image);
                 html += '</div>';
 
@@ -281,13 +330,11 @@
 
                 // upgrades
                 html += '<div class="col-xs-8">';
-                $(upgrades).each(function(j,u) {
+                $(all_upgrades).each(function(j,u) {
 
-                    if ( ! card_images.upgrades[ canonicalize(u) ] ) {
-                        errors.push( "Upgrade '"+u+"' não cadastrado!" );
-                    } else {
-                        var upgrade_image = card_images.upgrades[ canonicalize(u) ].file;
-                        html += '<img class="img img-fluid img-upgrade" ship-id="$id" upgrade-type="$type" src="$" style="width: 12%"/>'.replace('$type',card_images.upgrades[ canonicalize(u) ].type).replace("$id",shipId).replace('$',upgrade_image);
+                    if ( u ) {
+                        var upgrade_image = base_url + u[0].image;
+                        html += '<img class="img img-fluid img-upgrade" ship-id="$id" upgrade-type="$type" src="$" style="width: 12%"/>'.replace('$type',u[0].slot).replace("$id",shipId).replace('$',upgrade_image);
                     }
                 });
                 html += "</div>";
@@ -307,8 +354,8 @@
             }
         });
         activateButtons()
-        console.log(squad_points)
-        alert(errors);
+        $('#pontuacao').html("Pontuação total do squad: "+squad_points);
+        if (errors!="") { alert(errors); }
 
     })
 

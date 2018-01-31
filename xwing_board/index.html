@@ -77,6 +77,7 @@
             <div class='col-xs-12'>
             <h2>Board</h2>
             <span id='pontuacao'></span>
+            <span id='killed_points'></span>
             <div class='container'/>
             </div>
             </div>
@@ -95,11 +96,29 @@
 
     <!-- Menu Toggle Script -->
     <script>
-    var pilots,upgrades,ships;
+
+    // reference and databases
+    var pilots,upgrades,ships,damage_deck_cards,conditions;
+
+    // usable deck
+    var damage_deck;
+
+    // damage card assigned to ships
+    var ship_damage = {};
+
+    // how many points has been killed
+    var killed_points = 0;
+
+    // ships, pilots
+    var squad_ships={},squad_pilots={};
+
+    // other configuration
     var shield_image = './img/s.png';
     var hull_image = './img/h.png';
-    var base_url = './bower_components/xwing-data/images/';
+    var base_url = { 'en': './bower_components/xwing-data/images/', 'pt': './img/pt/' };
+    var lang = 'pt';
     var upgrade_card_back_image = './img/$type_back.png';
+    var damage_deck_back_image = base_url[lang] + '/damage-decks/core-tfa/back.png'
 
     $.ajax( './bower_components/xwing-data/data/pilots.js', {
         complete: function(x) {
@@ -116,6 +135,12 @@
     $.ajax( './bower_components/xwing-data/data/ships.js', {
         complete: function(x) {
             ships = jQuery.parseJSON(x.responseText);
+        }
+    });
+
+    $.ajax( './bower_components/xwing-data/data/damage-deck-core-tfa.js', {
+        complete: function(x) {
+            damage_deck_cards = jQuery.parseJSON(x.responseText);
         }
     });
 
@@ -144,6 +169,39 @@
         return $('.row[ship-id='+shipId+']');
     }
 
+    function shuffle(a) {
+        var j,x,i;
+        for (i=a.length-1;i>0;i--){
+            j = Math.floor(Math.random()*(i+1));
+            x = a[i];
+            a[i] = a[j];
+            a[j] = x;
+        }
+    }
+
+    /** damage deck **/
+    function prepareDamageDeck() {
+        damage_deck = []
+        $(damage_deck_cards).each(function(i,c){
+            for( var i=0;i<c.amount;i++ ){
+                damage_deck.push( c );
+            }
+        });
+        shuffle(damage_deck)
+    }
+
+    function drawDamageCard() {
+        return damage_deck.shift();
+    }
+
+    /** screen **/
+
+    function flipImageElement(e) {
+        var src = $(e.target).attr('src');
+        $(e.target).attr('src', $(e.target).attr('src-flip'));
+        $(e.target).attr('src-flip', src);
+    }
+
     function updateShieldsAndHull(shipId) {
 
         var el = findLineForShipId(shipId);
@@ -159,8 +217,23 @@
         for( var j=1; j<= shi; j++ ) {
             html += '<img class="img" src="$"/>'.replace('$',shield_image);
         }
+        // TODO allow flip cards (as per chewie, determination and specific actions)
+        $(ship_damage[shipId].up).each(function(i,c){
+                html += '<img class="img img-damage-card" src-flip="$back" style="width:50%" src="$front"/>'
+                        .replace('$back', damage_deck_back_image )
+                        .replace('$front',base_url[lang] + "/" + c.image );
+        });
+        // TODO show cards that are down, allowing to flip them.
+        $(ship_damage[shipId].down).each(function(i,c){
+                html += '<img class="img img-damage-card" src-flip="$back" style="width:50%" src="$front"/>'
+                        .replace('$front', damage_deck_back_image )
+                        .replace('$back',base_url[lang] + "/" + c.image );
+        });
 
-        $('.shield_hull[ship-id='+shipId+']').html(html)
+        $('.shield_hull[ship-id='+shipId+']').html(html);
+
+        // TODO it keeps erasing, creating HTML and hooking events to them; prone to overflow and future problems?
+        $('.img-damage-card').click(flipImageElement)
 
     }
 
@@ -189,13 +262,34 @@
 
             if ( shields > 0 && ! ignoreShield) {
                 shields --;
+                // algum efeito de crítico afeta shield?
             } else if ( hull > 0 ) {
+                card = drawDamageCard();
                 hull --;
-                if ( type=='crit' ) {
-                // TODO se for critico tirar carta etc
+                if ( type=='crit' && card) {
+                    // se existe ainda carta de dano crítico, vire-a.
+                    if ( card ) {
+                        // TODO I'll show you the dark side
+                        ship_damage[shipId].up.push(card);
+                        if ( card.name == 'Direct Hit!' ) { // TODO language dependent!!! maybe hook code on json directly
+                            hull--;
+                        }
+                    } 
+                } else {
+                    ship_damage[shipId].down.push(card);
                 }
-                if ( hull == 0 ) {
-                    alive = 0;
+            }
+
+            if ( squad_ships[shipId].size=='large' ) {
+                if ( (1*hull+1*shields) <= ( squad_ships[shipId].shields + squad_ships[shipId].hull )/2 && $(el).attr('halved') != '1' ) {
+                    killed_points += Math.floor((1*$(el).attr('points'))/2);
+                    $(el).attr('halved',1);
+                    $('#killed_points').html("Pontos perdidos: "+killed_points);
+                }
+                if ( (1*hull+1*shields) <= 0 && !$(el).attr('killed') != 1 ) {
+                    killed_points += Math.ceil((1*$(el).attr('points'))/2);
+                    $(el).attr('killed',1);
+                    $('#killed_points').html("Pontos perdidos: "+killed_points);
                     // TODO desativar botoes, deixar imagem cinza
                     var filterVal = 'grayscale(100%) contrast(20%)';
                     $('.img-pilot[ship-id='+shipId+'], .img-upgrade[ship-id='+shipId+']').css('filter',filterVal)
@@ -205,8 +299,19 @@
                               .css('msFilter',filterVal);
                 }
             } else {
-                alert("Nave morreu");
-                alive = 0;
+                if ( hull <= 0 &&  $(el).attr('killed') != 1 ) {
+                    alive = 0;
+                    killed_points += 1*$(el).attr('points');
+                    $('#killed_points').html("Pontos perdidos: "+killed_points);
+                    $(el).attr('killed',1);
+                    // TODO desativar botoes, deixar imagem cinza
+                    var filterVal = 'grayscale(100%) contrast(20%)';
+                    $('.img-pilot[ship-id='+shipId+'], .img-upgrade[ship-id='+shipId+']').css('filter',filterVal)
+                              .css('webkitFilter',filterVal)
+                              .css('mozFilter',filterVal)
+                              .css('oFilter',filterVal)
+                              .css('msFilter',filterVal);
+                }
             }
 
             el.attr('ship-shields',shields);
@@ -235,22 +340,7 @@
             updateShieldsAndHull(shipId);
         });
 
-        $('.img-upgrade').click(function(e){
-            var flip, img;
-            if ( $(e.target).attr('xwing-flipped') != "1" ) {
-                img =  upgrade_card_back_image.replace('$type',$(e.target).attr('upgrade-type'));
-                $(e.target).attr('src-orig',$(e.target).attr('src'));
-                flip = 1;
-            } else {
-                img = $(e.target).attr('src-orig');
-                flip = 0;
-            }
-
-            
-            $(e.target).attr('src',img);
-            $(e.target).attr('xwing-flipped',flip);
-
-        })
+        $('.img-upgrade').click(flipImageElement);
     }
 
 
@@ -260,9 +350,9 @@
         e.preventDefault();
         var errors = [];
         var squad_text = $('#squad1').val();
-        var squad_ships = squad_text.split("\n");
+        var squad_ships_text = squad_text.split("\n");
         var squad_points = 0;
-        $(squad_ships).each(function(id,s){
+        $(squad_ships_text).each(function(id,s){
             var myRegexp = /(.*?)(?:\ \+\ (.*))?\ \((.*)\)/g;
             var match = myRegexp.exec(s);
             var pilot = match[1]
@@ -303,14 +393,15 @@
                 }
                 this_ship_points = pilot_object[ip].points + upgrade_points;
 
-                var pilot_image = base_url + pilot_object[ip].image;
+                var pilot_image = base_url['en'] + pilot_object[ip].image; // TODO -- allow localization
                 var ship_object = myFind( ships, canonicalize(pilot_object[ip].ship) );
                 var shipId = "ship-"+id;
+
 
                 var html = "";
 
                 if ( ship_object ) {
-                    html += "<div class='row' ship-id='$id' ship-shields='$shi' ship-hull='$hul' points='$poi'  ship-alive='1'>"
+                    html += "<div class='row' ship-id='$id' ship-shields='$shi' ship-hull='$hul' points='$poi' ship-alive='1' killed='0' halved='0'>"
                             .replace("$id",shipId)
                             .replace ("$shi",ship_object[0].shields)
                             .replace('$hul',ship_object[0].hull )
@@ -333,8 +424,9 @@
                 $(all_upgrades).each(function(j,u) {
 
                     if ( u ) {
-                        var upgrade_image = base_url + u[0].image;
-                        html += '<img class="img img-fluid img-upgrade" ship-id="$id" upgrade-type="$type" src="$" style="width: 12%"/>'.replace('$type',u[0].slot).replace("$id",shipId).replace('$',upgrade_image);
+                        var upgrade_image = base_url['en'] + u[0].image; // TODO allow localization
+                        var background_image = './img/'+ u[0].slot + '_back.png';
+                        html += '<img class="img img-fluid img-upgrade" ship-id="$id" upgrade-type="$type" src="$" src-flip="$background_image" style="width: 12%"/>'.replace('$type',u[0].slot).replace("$id",shipId).replace('$background_image',background_image).replace('$',upgrade_image);
                     }
                 });
                 html += "</div>";
@@ -350,11 +442,15 @@
 
 
                 $('.container').prepend(html);
+                ship_damage[shipId] = { up: [], down: [] };
                 updateShieldsAndHull(shipId);
+                squad_ships[shipId] = ship_object[0];
+                squad_pilots[shipId] = pilot_object[ip];
             }
         });
         activateButtons()
         $('#pontuacao').html("Pontuação total do squad: "+squad_points);
+        prepareDamageDeck();
         if (errors!="") { alert(errors); }
 
     })

@@ -14,14 +14,29 @@ var dial_backs = {}
 var pins = {}
 
 // how many maneuvers on eah dial
-var dial_movements = { 'firespray': 17, 'quadjumper': 18 };
+var dial_movements = {   "attack_shuttle": 17,
+    "auzituck": 15,
+    "awing": 17,
+    "bwing": 17,
+    "ewing": 20,
+    "firespray": 17,
+    "headhunter": 16,
+    "kwing": 11,
+    "quadjumper": 18,
+    "sheathipede": 16,
+    "starfighter": 15,
+    "t65_xwing": 17,
+    "uwing": 13,
+    "vcx100": 17,
+    "yt1300": 17,
+    "yt2400": 17,
+    "ywing": 14
+};
 var angles = {}
 var dials;
 
 window.onload = function() {	
-
     if ( !window.sessionStorage.getItem('xwingDials') ) {
-
     } else {
 
         var obj = JSON.parse( window.sessionStorage.getItem('xwingDials') )
@@ -35,11 +50,12 @@ window.onload = function() {
 
 
     // hook events to the form
-    $('#add-dial-button').on('click',function(){
+    $('#select-dial').on('change',function(){
         init_dials.push( $('#select-dial').val() );
         var txt="";
         $(init_dials).each(function(i,v){txt+=v+"<br>"});
         $('#dial-list').html(txt);
+        $('#select-dial').val("");
     });
 
     // hook events to the form
@@ -74,9 +90,9 @@ playGame.prototype = {
      preload: function(){
             // preloading graphic assets
             $(init_dials).each(function(i,v){
-                game.load.image(v+"_dial", v+"_dial.png");
+                game.load.image(v+"_dial", "dials/"+v+"_dial.png");
             });
-            game.load.image("back", "dial_back.png");
+            game.load.image("back", "dials/dial_back.png");
             game.load.image("pin", "pin.png");     
      },
      // funtion to be executed when the state is created
@@ -119,7 +135,7 @@ playGame.prototype = {
 	},
     rotate(o,e){
         var wheelref = wheel[o.__mykey]
-        var signal = e.clientX>200?+1:-1;
+        var signal = e.clientX>355?+1:-1;
         var angleIncrement = 360/o.__movements * signal;
         var spinTween = game.add.tween(wheelref).to({
             angle: angleIncrement.toString()

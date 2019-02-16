@@ -18,6 +18,8 @@ var pilots = null;
 
 var ship = null;
 
+var ship_string_id = [];
+
 var angles = {}
 var dials;
 var ship_qtd = {};
@@ -34,6 +36,7 @@ window.onload = function() {
         dials  = obj.dials
         angles = obj.angles
         init_dials = obj.init_dials
+        ship_string_id = obj.ship_string_id
 
         init_playarea()
     }
@@ -95,19 +98,28 @@ window.onload = function() {
     });
 
     // add ship when selecting a pilot
-    $('#select-pilot').on('change',function(){
+    $('#add-dial-button').on('click',function(){
         var ship_id = $('#select-dial').val();
         var pilot_id = $('#select-pilot').val();
-        init_dials.push( {
+        var new_ship = {
             ship_id: ship_id,
             ship_name: ship.name,
             pilot_name: pilots[pilot_id].name,
             pilot_initiative: pilots[pilot_id].initiative
-        });
+        };
+        init_dials.push( new_ship );
+        
+        ship_string_id.push( createShipName(new_ship) )
+
         var txt="";
-        $(init_dials).each(function(i,v){txt+=ship_data.ships[faction][v.ship_id].title+" - " + v.pilot_name + " (" + v.pilot_initiative + ")<br>"});
+        $(init_dials).each(function(i,v){
+            txt+="<textarea ship-id='"+i+"' class='ship_identifier' class='form-control input-sm'>"+ship_string_id[i]+"</textarea><br>"}
+        );
         $('#dial-list').html(txt);
-        $('#select-pilot').val("");
+        $('.ship_identifier').on('change',function(e){
+            var i = $(e.target).attr('ship-id');
+            ship_string_id[i] = $(e.target).val();
+        });
     })
 
 
@@ -117,23 +129,32 @@ window.onload = function() {
         for( var i=0;i<dials;i++ ) {
             angles["wheel_"+i] = 0;
         }
+        $('#show-dial-button').hide()
         init_playarea();
     });
 
+    // reset and start again
     $('#erase-dials').on('click',function(){
-        game.destroy();
         $('#menubar').show();
         $('#dial-list').show();
+        $('#dial-list').html("");
+        $('#show-dial-button').show()
         killSession();
+        game.destroy();
     });
 
+}
+
+function createShipName( x ) {
+    return x.ship_name + "\n" + x.pilot_name + " PS"+x.pilot_initiative;
 }
 
 function  saveState(){
     var obj = {
         dials: dials,
         angles: angles,
-        init_dials: init_dials
+        init_dials: init_dials,
+        ship_string_id: ship_string_id
     };
     window.sessionStorage.setItem('xwingDials', JSON.stringify(obj) )
 };
@@ -142,6 +163,7 @@ function killSession(){
     init_dials = [];
     dials = {};
     angles = {};
+    ship_string_id = [];
     saveState();
     window.sessionStorage.removeItem('xwingDials' )
 }
@@ -185,8 +207,10 @@ playGame.prototype = {
             // add the back dial
             var backdial = game.add.sprite(game.width / 2 , 350*(i+0.5)+20, "rebel_back" );
             backdial.anchor.set(0.5);
+
             // adding the wheel in the middle of the canvas
             wheel[key] = game.add.sprite(game.width / 2 , 350*(i+0.5)+20, init_dials[i].ship_id+"_dial" );
+
             // setting wheel registration point in its center
             wheel[key].anchor.set(0.5);
             wheel[key].inputEnabled = true;
@@ -206,8 +230,8 @@ playGame.prototype = {
             } else {
                 ship_qtd[tmp_id]++;
             }
-            var shipname = init_dials[i].ship_name + " " + init_dials[i].pilot_name + (ship_qtd[tmp_id] > 1 ? (" #" + ship_qtd[tmp_id]) : "") + " ("+init_dials[i].pilot_initiative+")";
-            var text = game.add.text( 20, 350*i, shipname, { font: '20px Arial'} )
+            var shipname = ship_string_id[i]; //createShipName(init_dials[i]);
+            var text = game.add.text( 20, 350*i, shipname, { font: '20px Arial', wordWrap: true, wordWrapWidth: "50%" } )
 
         }
 

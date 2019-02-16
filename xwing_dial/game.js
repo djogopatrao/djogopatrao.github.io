@@ -20,6 +20,8 @@ var ship = null;
 
 var ship_string_id = [];
 
+var scroll=null;
+
 var angles = {}
 var dials;
 var ship_qtd = {};
@@ -141,7 +143,7 @@ window.onload = function() {
         $('#show-dial-button').show()
         killSession();
         game.destroy();
-    });
+        });
 
 }
 
@@ -196,6 +198,9 @@ playGame.prototype = {
             game.load.image("unlock", "unlock.png");
             game.load.image("lock", "lock.png");
             game.load.image("pin", "pin.png");     
+            Phaser.Canvas.setTouchAction(game.canvas, "auto"); // disable the default "none" so enable scroll
+            game.input.touch.preventDefault = false;
+
      },
      // funtion to be executed when the state is created
   	create: function(){
@@ -222,6 +227,7 @@ playGame.prototype = {
             lock[key].inputEnabled = true;
             lock[key].__mykey = key;
             lock[key].events.onInputDown.add(this.toggleLockDial,this);
+            lock[key].events.onInputUp.add(this.releaseLockDial,this);
 
             // text
             var tmp_id = init_dials[i].ship_id+init_dials[i].pilot_name
@@ -230,7 +236,7 @@ playGame.prototype = {
             } else {
                 ship_qtd[tmp_id]++;
             }
-            var shipname = ship_string_id[i]; //createShipName(init_dials[i]);
+            var shipname = ship_string_id[i]; 
             var text = game.add.text( 20, 350*i, shipname, { font: '20px Arial', wordWrap: true, wordWrapWidth: "50%" } )
 
         }
@@ -250,11 +256,17 @@ playGame.prototype = {
             wheel[o.__mykey].alpha =  1.0
             wheel[o.__mykey].inputEnabled = true
         }
+        game.input.touch.preventDefault = true; // disable scroll for now
+    },
+    releaseLockDial(o,e) {
+        game.input.touch.preventDefault = false; // enable scroll for back
     },
     update(){
         if (game.input.activePointer.isDown ) {
             for(var w in wheel) {
                 if ( wheel[w].input.checkPointerOver(game.input.activePointer)) {    
+                    game.input.touch.preventDefault = true; // disable scroll for now
+
                 // pointer is down and is over our sprite, so do something here
                     var delta_x = game.input.x - wheel[w].position.x; 
                     var delta_y = game.input.y - wheel[w].position.y;
@@ -282,11 +294,14 @@ playGame.prototype = {
                     }
 
                     drag_event={angle:angle, mykey:w}
-
+                    return;
                 }
             }
-        } else if ( game.input.activePointer.isUp && drag_event ) {
-            drag_event = false;
+     } else if ( game.input.activePointer.isUp ) {
+            if ( drag_event ) {
+                drag_event = false;
+                game.input.touch.preventDefault = false; // enable scroll again
+            }
         }
     }
 }

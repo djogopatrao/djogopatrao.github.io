@@ -170,6 +170,7 @@ function loadState() {
     init_dials = obj.init_dials
     ship_string_id = obj.ship_string_id
     damage_deck = obj.damage_deck
+    ship_damage = obj.ship_damage
 }
 
 function  saveState(){
@@ -178,7 +179,8 @@ function  saveState(){
         angles: angles,
         init_dials: init_dials,
         ship_string_id: ship_string_id,
-        damage_deck: damage_deck
+        damage_deck: damage_deck,
+        ship_damage: ship_damage
     };
     window.sessionStorage.setItem('xwingDials', JSON.stringify(obj) )
 };
@@ -267,6 +269,9 @@ playGame.prototype = {
             game.load.image("unlock", "unlock.png");
             game.load.image("lock", "lock.png");
             game.load.image("pin", "pin.png");     
+            game.load.image("hit", "hit_icon.png");                 
+            game.load.image("crit", "crit_icon.png");     
+            game.load.image("damage", "damage.png");     
             game.load.image("dial_selector", "dial_selector.png")
             game.load.image("window_damage","window_damage.png")
 
@@ -322,11 +327,20 @@ playGame.prototype = {
             selector[key].anchor.set(0.5);
             selector[key].inputEnabled = false;
 
-            // damage "window" button
-            wheel[key].__damage_button = game.add.text( game.width-64, 350*i+90, 'DAM\nAGE', {font: '20px Arial', backgroundColor: 'orange' });
+            // damage "window" button open
+            wheel[key].__damage_button = game.add.sprite( game.width-64, 350*i+90, 'damage' );
             wheel[key].__damage_button.inputEnabled = true
-            wheel[key].__damage_button.events.onInputDown.add( this.toggleDamage, this );
+            wheel[key].__damage_button.events.onInputDown.add( this.openDamageWindow, this );
+wheel[key].__damage_button.events.onInputUp.add( this.releaseLockDial, this );
             wheel[key].__damage_button.__mykey = key;
+
+            // damage "window" button close
+            wheel[key].__damage_close_button = game.add.sprite( game.width-64, 350*i+90, 'unlock' );
+            wheel[key].__damage_close_button.inputEnabled = false
+            wheel[key].__damage_close_button.alpha = 0.0;
+                    wheel[key].__damage_close_button.events.onInputDown.add( this.closeDamageWindow, this );
+
+            wheel[key].__damage_close_button.__mykey = key;
 
 
             // damage "window"
@@ -335,22 +349,23 @@ playGame.prototype = {
             wheel[key].__damage_window.inputEnabled = false
 
             // damage text (the list of damages)
-            wheel[key].__damage_text = game.add.text( 20, 350*i+90, 'Cartas de dano:', {font: '14px Arial' });
+            wheel[key].__damage_text = game.add.text( 20, 350*i+90, '', { font: '14px Arial' });
             wheel[key].__damage_text.inputEnabled = true
-            wheel[key].__damage_text.events.onInputDown.add( this.toggleDamage, this );
+            wheel[key].__damage_text.events.onInputDown.add( this.closeDamageWindow, this );
             wheel[key].__damage_text.__mykey = key;
             wheel[key].__damage_text.alpha = 0.0;
             wheel[key].__damage_text.inputEnabled = false
+            this.updateDamageText(key);
 
             // damage buttons (to give a hit or crit damage)
-            wheel[key].__hit_button = game.add.text( 200, 350*i+90, 'Hit', {font: '20px Arial', backgroundColor: 'orange' });
+            wheel[key].__hit_button = game.add.sprite( 200, 350*i+90, 'hit' )
             wheel[key].__hit_button.inputEnabled = true
             wheel[key].__hit_button.events.onInputDown.add( this.giveHit, this );
             wheel[key].__hit_button.__mykey = key;
             wheel[key].__hit_button.alpha = 0.0 //invisible
             wheel[key].__hit_button.inputEnabled = false
 
-            wheel[key].__crit_button = game.add.text( 226, 350*i+90, 'Crit', {font: '20px Arial', backgroundColor: 'yellow' });
+            wheel[key].__crit_button = game.add.sprite( 226, 350*i+90, 'crit' )
             wheel[key].__crit_button.inputEnabled = true
             wheel[key].__crit_button.events.onInputDown.add( this.giveCrit, this );
             wheel[key].__crit_button.__mykey = key;
@@ -392,8 +407,10 @@ playGame.prototype = {
     releaseLockDial(o,e) {
         game.input.touch.preventDefault = false; // enable scroll for back
     },
-    toggleDamage(o,e) {
+    openDamageWindow(o,e) {
         var key = o.__mykey;
+        console.log("openDamageWindow")
+        game.input.touch.preventDefault = true; // disable scroll for now
         if ( wheel[key].__mystate == 'wheel' ) {
             wheel[key].__damage_window.alpha = 1.0;
             wheel[key].__damage_text.alpha = 1.0;
@@ -404,7 +421,19 @@ playGame.prototype = {
             wheel[key].__hit_button.inputEnabled = true;
             wheel[key].__crit_button.inputEnabled = true;
             wheel[key].__mystate = 'damage';
-        } else if ( wheel[key].__mystate == 'damage' ) {
+
+            wheel[key].__damage_button.alpha = 0.0;
+            wheel[key].__damage_button.inputEnabled = false;
+            wheel[key].__damage_close_button.alpha = 1.0;
+            wheel[key].__damage_close_button.inputEnabled = true;
+        } else {
+            alert("Estado '"+wheel[key].__mystate+"' inválido em openDamageWindow! mande um print pro desenvolvedor q é bug!");
+        }
+    },
+    closeDamageWindow(o,e) {
+        var key = o.__mykey;
+        console.log("closeDamageWindow")
+        if ( wheel[key].__mystate == 'damage' ) {
             wheel[key].__damage_window.alpha = 0.0;
             wheel[key].__damage_text.alpha = 0.0;
             wheel[key].__hit_button.alpha = 0.0;
@@ -414,8 +443,13 @@ playGame.prototype = {
             wheel[key].__hit_button.inputEnabled = false;
             wheel[key].__crit_button.inputEnabled = false;
             wheel[key].__mystate = 'wheel';
+
+            wheel[key].__damage_button.alpha = 1.0;
+            wheel[key].__damage_button.inputEnabled = true;
+            wheel[key].__damage_close_button.alpha = 0.0;
+            wheel[key].__damage_close_button.inputEnabled = false;
         } else {
-            alert("Estado '"+wheel[key].__mystate+"' inválido! mande um print pro desenvolvedor q é bug!");
+            alert("Estado '"+wheel[key].__mystate+"' inválido em closeDamageWindow! mande um print pro desenvolvedor q é bug!");
         }
     },
     giveHit(o,e) {
@@ -447,6 +481,7 @@ playGame.prototype = {
             }            
         });
         wheel[shipKey].__damage_text.setText(text);
+        saveState()
     },
     update(){
         if (game.input.activePointer.isDown ) {

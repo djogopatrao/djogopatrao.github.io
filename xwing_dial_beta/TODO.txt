@@ -1,0 +1,5 @@
+1. janela para visualizar a carta (ao clicar na carta de dano, mostrar na tela)
+2. botoes para flipar / descartar (pode ficar na carta exibida em 2?)
+3. permitir desabilitar/sumir com dial quando tomar dano demais.
+4. visualização em celular
+5. deixar bonito

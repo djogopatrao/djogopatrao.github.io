@@ -29,21 +29,22 @@ var angles = {}
 var dials;
 var ship_qtd = {};
 
-// data about the damage deck
-var damage_deck_cards = null;
-
-// the deck itself
-var damage_deck;
-
-// damage cards per ship
-var ship_damage = {}
-
-
-
 // data.json (data about ships)
 var ship_data = {}
 
 window.onload = function() {	
+    if ( !window.sessionStorage.getItem('xwingDials') ) {
+    } else {
+
+        var obj = JSON.parse( window.sessionStorage.getItem('xwingDials') )
+
+        dials  = obj.dials
+        angles = obj.angles
+        init_dials = obj.init_dials
+        ship_string_id = obj.ship_string_id
+
+        init_playarea()
+    }
 
     // load ship json
     $.ajax({
@@ -58,6 +59,8 @@ window.onload = function() {
         }
     });
 
+
+    
     // populate ship select box when selecting a faction
     $('#select-faction').on('change',function(o,e){
         faction = $(o.target).val();
@@ -130,13 +133,12 @@ window.onload = function() {
     })
 
 
-    // start the playarea with the dials and damage deck
+    // hook events to the form
     $('#show-dial-button').on('click',function(){
         dials = init_dials.length;
         for( var i=0;i<dials;i++ ) {
             angles["wheel_"+i] = 0;
         }
-
         init_playarea();
     });
 
@@ -150,27 +152,10 @@ window.onload = function() {
         game.destroy();
         });
 
-    if ( !window.sessionStorage.getItem('xwingDials') ) {
-    } else {
-
-        loadState();
-        init_playarea()
-    }
 }
 
 function createShipName( x ) {
     return x.ship_name + "\n" + x.pilot_name + " PS"+x.pilot_initiative;
-}
-
-function loadState() {
-    var obj = JSON.parse( window.sessionStorage.getItem('xwingDials') )
-
-    dials  = obj.dials
-    angles = obj.angles
-    init_dials = obj.init_dials
-    ship_string_id = obj.ship_string_id
-    damage_deck = obj.damage_deck
-    ship_damage = obj.ship_damage
 }
 
 function  saveState(){
@@ -178,9 +163,7 @@ function  saveState(){
         dials: dials,
         angles: angles,
         init_dials: init_dials,
-        ship_string_id: ship_string_id,
-        damage_deck: damage_deck,
-        ship_damage: ship_damage
+        ship_string_id: ship_string_id
     };
     window.sessionStorage.setItem('xwingDials', JSON.stringify(obj) )
 };
@@ -190,54 +173,10 @@ function killSession(){
     dials = {};
     angles = {};
     ship_string_id = [];
-    damage_deck = null;
     saveState();
     window.sessionStorage.removeItem('xwingDials' )
 }
 
-/**
- * Damage Deck Stuff
- *
- *
-**/
-
-/** damage deck **/
-function prepareDamageDeck() {
-    damage_deck = []
-    $(damage_deck_cards.cards).each(function(index,c){
-        for( var i=0;i<c.amount;i++ ){
-            damage_deck.push( c );
-        }
-    });
-   shuffle(damage_deck)
-}
-
-function getDamageCardURL( damage_card ) {
-    return "damage_deck/syndicate/" + damage_card.title + ".png";
-}
-
-function shuffle(a) {
-    var j,x,i;
-    for (i=a.length-1;i>0;i--){
-        j = Math.floor(Math.random()*(i+1));
-        x = a[i];
-        a[i] = a[j];
-        a[j] = x;
-    }
-}
-
-
-function drawDamageCard() {
-    return damage_deck.shift();
-}
-
-
-
-/**
- * Playarea
- *
- *
-**/
 function init_playarea() {
     // creation of a 458x488 game
     game = new Phaser.Game("95", 350*dials, Phaser.AUTO, "main",null,true);
@@ -250,8 +189,6 @@ function init_playarea() {
     $('#dial-list').hide();
     $('#show-dial-button').hide()
 }
-
-
 
 // PLAYGAME STATE
 	
@@ -269,27 +206,7 @@ playGame.prototype = {
             game.load.image("unlock", "unlock.png");
             game.load.image("lock", "lock.png");
             game.load.image("pin", "pin.png");     
-            game.load.image("hit", "hit_icon.png");                 
-            game.load.image("crit", "crit_icon.png");     
-            game.load.image("damage", "damage.png");     
             game.load.image("dial_selector", "dial_selector.png")
-            game.load.image("window_damage","window_damage.png")
-
-            // load damage deck json
-            $.ajax( {
-                url: './damage_deck/core.json',
-                dataType:"json",
-                success: function(x) {
-                    damage_deck_cards = x;
-                    $(damage_deck_cards.cards).each(function(i,c){
-                        game.load.image(c.title, getDamageCardURL(c) );
-                    });
-                    if ( !damage_deck ) {
-                        prepareDamageDeck();
-                    }
-                }
-            });
-
             Phaser.Canvas.setTouchAction(game.canvas, "auto"); // disable the default "none" so enable scroll
             game.input.touch.preventDefault = false;
 
@@ -311,8 +228,6 @@ playGame.prototype = {
             wheel[key].anchor.set(0.5);
             wheel[key].inputEnabled = true;
             wheel[key].__mykey = key;
-            wheel[key].__myindex = i; 
-            wheel[key].__mystate = 'wheel'; // or damage 
             game.add.tween(wheel[key]).to({angle:angles[key]},500,Phaser.Easing.Quadratic.Out,true);
 
             // to lock/unlock the dial
@@ -327,53 +242,7 @@ playGame.prototype = {
             selector[key].anchor.set(0.5);
             selector[key].inputEnabled = false;
 
-            // damage "window" button open
-            wheel[key].__damage_button = game.add.sprite( game.width-64, 350*i+90, 'damage' );
-            wheel[key].__damage_button.inputEnabled = true
-            wheel[key].__damage_button.events.onInputDown.add( this.openDamageWindow, this );
-wheel[key].__damage_button.events.onInputUp.add( this.releaseLockDial, this );
-            wheel[key].__damage_button.__mykey = key;
-
-            // damage "window" button close
-            wheel[key].__damage_close_button = game.add.sprite( game.width-64, 350*i+90, 'unlock' );
-            wheel[key].__damage_close_button.inputEnabled = false
-            wheel[key].__damage_close_button.alpha = 0.0;
-                    wheel[key].__damage_close_button.events.onInputDown.add( this.closeDamageWindow, this );
-
-            wheel[key].__damage_close_button.__mykey = key;
-
-
-            // damage "window"
-            wheel[key].__damage_window = game.add.sprite( 20, 350*i+90, 'window_damage' )
-            wheel[key].__damage_window.alpha = 0.0;
-            wheel[key].__damage_window.inputEnabled = false
-
-            // damage text (the list of damages)
-            wheel[key].__damage_text = game.add.text( 20, 350*i+90, '', { font: '14px Arial' });
-            wheel[key].__damage_text.inputEnabled = true
-            wheel[key].__damage_text.events.onInputDown.add( this.closeDamageWindow, this );
-            wheel[key].__damage_text.__mykey = key;
-            wheel[key].__damage_text.alpha = 0.0;
-            wheel[key].__damage_text.inputEnabled = false
-            this.updateDamageText(key);
-
-            // damage buttons (to give a hit or crit damage)
-            wheel[key].__hit_button = game.add.sprite( 200, 350*i+90, 'hit' )
-            wheel[key].__hit_button.inputEnabled = true
-            wheel[key].__hit_button.events.onInputDown.add( this.giveHit, this );
-            wheel[key].__hit_button.__mykey = key;
-            wheel[key].__hit_button.alpha = 0.0 //invisible
-            wheel[key].__hit_button.inputEnabled = false
-
-            wheel[key].__crit_button = game.add.sprite( 226, 350*i+90, 'crit' )
-            wheel[key].__crit_button.inputEnabled = true
-            wheel[key].__crit_button.events.onInputDown.add( this.giveCrit, this );
-            wheel[key].__crit_button.__mykey = key;
-            wheel[key].__crit_button.alpha = 0.0 //invisible
-            wheel[key].__crit_button.inputEnabled = false
-
-
-            // ship title
+            // text
             var tmp_id = init_dials[i].ship_id+init_dials[i].pilot_name
             if ( ! ship_qtd[tmp_id] ) {
                 ship_qtd[tmp_id] = 1;
@@ -406,82 +275,6 @@ wheel[key].__damage_button.events.onInputUp.add( this.releaseLockDial, this );
     },
     releaseLockDial(o,e) {
         game.input.touch.preventDefault = false; // enable scroll for back
-    },
-    openDamageWindow(o,e) {
-        var key = o.__mykey;
-        console.log("openDamageWindow")
-        game.input.touch.preventDefault = true; // disable scroll for now
-        if ( wheel[key].__mystate == 'wheel' ) {
-            wheel[key].__damage_window.alpha = 1.0;
-            wheel[key].__damage_text.alpha = 1.0;
-            wheel[key].__hit_button.alpha = 1.0;
-            wheel[key].__crit_button.alpha = 1.0;
-            wheel[key].__damage_window.inputEnabled = true;
-            wheel[key].__damage_text.inputEnabled = true;
-            wheel[key].__hit_button.inputEnabled = true;
-            wheel[key].__crit_button.inputEnabled = true;
-            wheel[key].__mystate = 'damage';
-
-            wheel[key].__damage_button.alpha = 0.0;
-            wheel[key].__damage_button.inputEnabled = false;
-            wheel[key].__damage_close_button.alpha = 1.0;
-            wheel[key].__damage_close_button.inputEnabled = true;
-        } else {
-            alert("Estado '"+wheel[key].__mystate+"' inválido em openDamageWindow! mande um print pro desenvolvedor q é bug!");
-        }
-    },
-    closeDamageWindow(o,e) {
-        var key = o.__mykey;
-        console.log("closeDamageWindow")
-        if ( wheel[key].__mystate == 'damage' ) {
-            wheel[key].__damage_window.alpha = 0.0;
-            wheel[key].__damage_text.alpha = 0.0;
-            wheel[key].__hit_button.alpha = 0.0;
-            wheel[key].__crit_button.alpha = 0.0;
-            wheel[key].__damage_window.inputEnabled = false;
-            wheel[key].__damage_text.inputEnabled = false;
-            wheel[key].__hit_button.inputEnabled = false;
-            wheel[key].__crit_button.inputEnabled = false;
-            wheel[key].__mystate = 'wheel';
-
-            wheel[key].__damage_button.alpha = 1.0;
-            wheel[key].__damage_button.inputEnabled = true;
-            wheel[key].__damage_close_button.alpha = 0.0;
-            wheel[key].__damage_close_button.inputEnabled = false;
-        } else {
-            alert("Estado '"+wheel[key].__mystate+"' inválido em closeDamageWindow! mande um print pro desenvolvedor q é bug!");
-        }
-    },
-    giveHit(o,e) {
-        var card = drawDamageCard();
-        var i = wheel[ o.__mykey ].__myindex;
-        if ( !ship_damage[o.__mykey] ) {
-            ship_damage[o.__mykey] = []
-        }
-        ship_damage[o.__mykey].push( { card: card, flipped: 0} );
-        this.updateDamageText(o.__mykey);
-    },
-    giveCrit(o,e) {
-        var card = drawDamageCard();
-        var i = wheel[ o.__mykey ].__myindex;
-        if ( !ship_damage[o.__mykey] ) {
-            ship_damage[o.__mykey] = []
-        }
-        ship_damage[o.__mykey].push( { card: card, flipped: 1} );
-        this.updateDamageText(o.__mykey);
-
-    },
-    updateDamageText(shipKey) {
-        var text = "Cartas de dano:\n";
-        $( ship_damage[shipKey] ).each(function(i,x){
-            if ( x.flipped ) {
-                text += x.card.title+"\n";
-            } else {
-                text += "Hit\n";
-            }            
-        });
-        wheel[shipKey].__damage_text.setText(text);
-        saveState()
     },
     update(){
         if (game.input.activePointer.isDown ) {

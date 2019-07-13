@@ -105,12 +105,17 @@ $(document).ready(function(){
         var unit_id = $(e.currentTarget).attr('unit-id');
         var unit = allUnits[unit_id];
         if ( !unit ) { throw "Não achei essa unidade! Eita."; }
-        var newUnit = cloneObject( unit );
-        // TODO testar se é unidade unica, e se já existe
-        // este array contem os upgrades equipados.
-        newUnit.equipped_upgrades = []
-        army.push(newUnit);
-        renderArmy();
+        if ( unit.unique && findUnitInArmyByName( unit.name ) ) {
+            alert("Unidade unica já foi adicionada!");
+            return;
+        } else {
+            var newUnit = cloneObject( unit );
+            // TODO testar se é unidade unica, e se já existe
+            // este array contem os upgrades equipados.
+            newUnit.equipped_upgrades = []
+            army.push(newUnit);
+            renderArmy();
+        }
         $('#units').hide();
         $('#army').show();
     };
@@ -122,6 +127,25 @@ $(document).ready(function(){
             var army_index = $(e.target).attr('army-index');
             var upgrade_index = $(e.target).attr('upgrade-index');
             selectUpgrade( army_index, upgrade_index, army[army_index].upgrade_type[upgrade_index], army[army_index].unit_type );
+        });
+    }
+
+    // pendura eventos para remover unidades
+    hookEventsForRemoveUnit = function() {
+        $('.remove-unit').on('click',function(e){
+            var army_index = $(e.target).attr('army-index');
+            army.splice(army_index,1);
+            renderArmy();
+        });
+    }
+
+    hookEventsForCopyUnit = function() {
+        $('.copy-unit').on('click', function(e){
+            var army_index = $(e.target).attr('army-index');
+            var new_unit = cloneObject( army[army_index] );
+            new_unit.equipped_upgrades = cloneObject( new_unit.equipped_upgrades );
+            army.push(new_unit);
+            renderArmy();
         });
     }
 
@@ -181,9 +205,15 @@ $(document).ready(function(){
         $(army).each(function(k,v){
             var card_title = getUnitTitle(v);
             var card_subtitle = getUnitSubTitle(v);
-            html += "<span class='card' style='width: 18em' army-index='"+k+"'><div class='card-body'>"
+            html += "<span class='card' style='width: 18em' army-index='"+k+"'>";
+            html += "<div class='card-header'>" + card_title;
+            if ( ! v.unique ) {
+                html += "<button type='button' class='btn btn-primary copy-unit' army-index='"+k+"'>C</button>"
+            }
+            html += "<button type='button' class='btn btn-danger remove-unit' army-index='"+k+"'>X</button>"
+            html += "</div>";
+            html += "<div class='card-body'>"
             // <img class="card-img-top" src="..." alt="Card image cap">
-            html += "<h5 class='card-title'>" + card_title + "</h5>";
             html += "<h6 class='card-subtitle mb-2 text-muted'>"+ card_subtitle + "</h6>"
             html += "<p class='card-text'>"+v.card_text+"</p>";
             $(v.upgrade_type).each(function(k2,v2){
@@ -211,6 +241,8 @@ $(document).ready(function(){
 
         };
         hookEventsForUpgradesLinks();
+        hookEventsForRemoveUnit();
+        hookEventsForCopyUnit();
     };
 
     // esconde dados do exercito
@@ -259,6 +291,15 @@ $(document).ready(function(){
         return returnValue;
     }
 
+    findUnitInArmyByName = function(name) {
+        var returnValue = false;
+        $(army).each(function(k,v){
+            if ( v.name == name ) {
+                returnValue = true;
+            }
+        });
+        return returnValue;
+    }
 
     // clona um objeto simples
     cloneObject = function(obj) {

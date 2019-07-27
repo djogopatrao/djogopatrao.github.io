@@ -84,14 +84,17 @@ $(document).ready(function(){
         $(['commander','corps','heavy','operative','special_forces','support']).each(function(k,rank){
             var img = "<img src='icons/"+rank+".png'/>";
             $(unitsByRank[rank]).each(function(k2,v2){
-                html += "<li class='list-group-item add-unit-item' unit-id='"+v2.id+"'>"+img+" "+v2.name+"</li>"
+                html += "<li class='list-group-item' unit-id='"+v2.id+"'>"+img+" "+v2.name
+                html += "<button type='button' class='btn btn-normal show-unequiped-unit' unit-id='"+v2.id+"'>V</button>"
+                html += "<button type='button' class='btn btn-primary add-unit-item' unit-id='"+v2.id+"'>+</button>"
+                html += "</li>"
             });
         });
         html += "</ul>";
         $('#units').html(html);
 
         $('.add-unit-item').on('click',addUnitToArmy);
-
+        hookEventsForViewingUnequipedUnit();
     })
 
     // ao escolher uma unidade, exibe combo de unidades e esconde exército
@@ -100,19 +103,47 @@ $(document).ready(function(){
         $('#army').hide();
     });
 
+    // verifica se a unidade unit pode ser adicionada ao exército em edição
+    CanAddUnitToArmy = new (function() {
+        this.error = "";
+        this.betterClose = false; // indica se, depois do erro, é melhor fechar a janela de seleção de unidade
+        this.validate = function(unit) {
+            this.error = "";
+            this.betterClose = false;
+            // verifica se unidade única está sendo adicionada mais de uma vez
+            if ( unit.unique && findUnitInArmyByName( unit.name ) ) {
+                this.error="Já existe um "+unit.name+" no exército, e esta é uma unidade única";
+                return false;
+            }
+
+            // verifica se não vai superar a quantidade máxima de unidades
+            var totalUnitsByRank = getUnitQtdPerRank();
+            if ( totalUnitsByRank[unit.rank]+1 > allowedQtds[unit.rank].max ) {
+                this.error="Adicionar mais um "+unit.rank+" no exército ultrapassa a quantidade máxima ("+allowedQtds[unit.rank].max +")";
+                this.betterClose = true;
+                return false;
+            }
+        
+            return true;
+        }
+    })()
+
+    // adiciona uma unidade (indicada no elemento que disparou o
+    // evento e) ao exército, se possível.
     addUnitToArmy = function(e){
         // codigo a rodar quando escolhe uma unidade
         var unit_id = $(e.currentTarget).attr('unit-id');
         var unit = allUnits[unit_id];
         if ( !unit ) { throw "Não achei essa unidade! Eita."; }
-        if ( unit.unique && findUnitInArmyByName( unit.name ) ) {
-            alert("Unidade unica já foi adicionada!");
-            return;
+        if ( !CanAddUnitToArmy.validate(unit) ) {
+            alert( CanAddUnitToArmy.error );
+            if ( !CanAddUnitToArmy.betterClose ) {
+                return;
+            }
         } else {
             var newUnit = cloneObject( unit );
-            // TODO testar se é unidade unica, e se já existe
-            // este array contem os upgrades equipados.
             newUnit.equipped_upgrades = []
+            newUnit.unit_id = unit_id
             army.push(newUnit);
             renderArmy();
         }
@@ -161,6 +192,48 @@ $(document).ready(function(){
         });
     }
 
+    hookEventsForViewingUnit = function() {
+        $('.show-unit').on('click',function(e){
+            var unit_id = $(e.target).attr('unit-id');
+            showUnitCard( unit_id );
+        });
+    }
+
+    // exibe a carta referente à unidade #armyindex do exército montado
+    showUnitCard = function( unit_id ) {
+        var img_url = "img" + "/" + allUnits[unit_id].faction + "/" + "unit" + "/" + allUnits[unit_id].name + ".png"
+        hideArmy();
+        $('#cards').show()
+        console.log(img_url);
+        $('#cards').html("<img src='"+img_url+"' class='card-image'>");
+        $('img.card-image').on('click',function(e){
+            $('#cards').hide()
+            showArmy();
+        })
+    }
+
+
+    hookEventsForViewingUnequipedUnit = function() {
+        $('.show-unequiped-unit').on('click',function(e){
+            var unit_id = $(e.target).attr('unit-id');
+            showUnequipedUnitCard( unit_id );
+        });
+    }
+
+    // exibe a carta referente à unidade #armyindex do exército montado
+    showUnequipedUnitCard = function( unit_id ) {
+        var img_url = "img" + "/" + allUnits[unit_id].faction + "/" + "unit" + "/" + allUnits[unit_id].name + ".png"
+        $('#units').hide();
+        $('#cards').show()
+        console.log(img_url);
+        $('#cards').html("<img src='"+img_url+"' class='card-image'>");
+        $('img.card-image').on('click',function(e){
+            $('#cards').hide()
+            $('#units').show();
+        })
+    }
+
+
     // exibe a tela de seleção de upgrade 
     selectUpgrade = function( army_index, upgrade_index, upgrade_type,  unit_type ) {
         console.log("clicou no upgrade "+upgrade_type+" da unidade "+army[army_index].name + " tipo " + unit_type);
@@ -196,11 +269,20 @@ $(document).ready(function(){
         return upgrade.keyword.join("<br/>");
     }
 
+    // contabiliza quantidade de unidades por rank
+    getUnitQtdPerRank = function() {
+        var totalUnitsByRank =  { "commander": 0, "corps": 0, "heavy": 0, "operative": 0, "special_forces": 0, "support": 0 }
+        $(army).each(function(k,v){
+            totalUnitsByRank[v.rank]++;
+        });
+        return totalUnitsByRank;
+    }
+
     // imprime exército
     renderArmy = function() {
         var html="";
-        totalPoints = 0;
-        totalUnitsByRank =  { "commander": 0, "corps": 0, "heavy": 0, "operative": 0, "special_forces": 0, "support": 0 }
+        var totalPoints = 0;
+        var totalUnitsByRank = getUnitQtdPerRank();
 
         $(army).each(function(k,v){
             var card_title = getUnitTitle(v);
@@ -210,6 +292,7 @@ $(document).ready(function(){
             if ( ! v.unique ) {
                 html += "<button type='button' class='btn btn-primary copy-unit' army-index='"+k+"'>C</button>"
             }
+            html += "<button type='button' class='btn btn-normal show-unit' unit-id='"+v.unit_id+"'>V</button>"
             html += "<button type='button' class='btn btn-danger remove-unit' army-index='"+k+"'>X</button>"
             html += "</div>";
             html += "<div class='card-body'>"
@@ -226,7 +309,6 @@ $(document).ready(function(){
             });
             html += "</div></span>";
             totalPoints += v.cost;
-            totalUnitsByRank[v.rank]++;
         });
         $('#army').html(html);
         $('#army-total-cost').html(totalPoints + "/" + maxPoints);
@@ -243,6 +325,7 @@ $(document).ready(function(){
         hookEventsForUpgradesLinks();
         hookEventsForRemoveUnit();
         hookEventsForCopyUnit();
+        hookEventsForViewingUnit();
     };
 
     // esconde dados do exercito

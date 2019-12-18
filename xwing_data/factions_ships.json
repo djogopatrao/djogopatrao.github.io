@@ -3,6 +3,7 @@
     {
       "name": "Rebel Alliance",
       "icon": "https://sb-cdn.fantasyflightgames.com/factions/Rebel.png",
+      "path": "rebel-alliance",
       "ships": [
         {
           "path": "arc-170-starfighter",
@@ -77,6 +78,7 @@
     {
       "name": "Galactic Empire",
       "icon": "https://sb-cdn.fantasyflightgames.com/factions/Imperial.png",
+      "path": "galactic-empire",
       "ships": [
         {
           "path": "alpha-class-star-wing",
@@ -139,6 +141,7 @@
     {
       "name": "Scum and Villainy",
       "icon": "https://sb-cdn.fantasyflightgames.com/factions/Scum.png",
+      "path": "scum-and-villainy",
       "ships": [
         {
           "path": "aggressor-assault-fighter",
@@ -221,6 +224,7 @@
     {
       "name": "Resistance",
       "icon": "https://sb-cdn.fantasyflightgames.com/factions/ResistanceIcon.png",
+      "path": "resistance",
       "ships": [
         {
           "path": "mg-100-starfortress-sf-17",
@@ -255,6 +259,7 @@
     {
       "name": "First Order",
       "icon": "https://sb-cdn.fantasyflightgames.com/factions/FirstOrderIcon.png",
+      "path": "first-order",
       "ships": [
         {
           "path": "tie-fo-fighter",
@@ -281,6 +286,7 @@
     {
       "name": "Galactic Republic",
       "icon": "https://sb-cdn.fantasyflightgames.com/factions/RepublicIcon.png",
+      "path": "galactic-republic",
       "ships": [
         {
           "path": "arc-170-starfighter",
@@ -307,6 +313,7 @@
     {
       "name": "Separatist Alliance",
       "icon": "https://sb-cdn.fantasyflightgames.com/factions/SeparatistIcon.png",
+      "path": "separatist-alliance",
       "ships": [
         {
           "path": "belbullab-22-starfighter",

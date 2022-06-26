@@ -38,7 +38,7 @@
     },
     { "difficulty": "White", "type": "Reload" }
   ],
-  "icon": "https://sb-cdn.fantasyflightgames.com/ship_types/I_TIEPunisher.png",
+  "icon": "https://squadbuilder.fantasyflightgames.com/ship_types/I_TIEPunisher.png",
   "pilots": [
     {
       "name": "\"Deathrain\"",
@@ -48,7 +48,7 @@
       "cost": 44,
       "xws": "deathrain",
       "ability": "After you drop or launch a device, you may perform an action.",
-      "image": "https://sb-cdn.fantasyflightgames.com/card_images/Card_Pilot_140.png",
+      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_140.png",
       "slots": [
         "Sensor",
         "Torpedo",
@@ -59,7 +59,7 @@
         "Modification",
         "Gunner"
       ],
-      "artwork": "https://sb-cdn.fantasyflightgames.com/card_art/Card_art_XW_P_140.jpg",
+      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_140.jpg",
       "ffg": 140,
       "hyperspace": false
     },
@@ -81,8 +81,8 @@
         "Modification",
         "Gunner"
       ],
-      "image": "https://sb-cdn.fantasyflightgames.com/card_images/Card_Pilot_139.png",
-      "artwork": "https://sb-cdn.fantasyflightgames.com/card_art/Card_art_XW_P_139.jpg",
+      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_139.png",
+      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_139.jpg",
       "ffg": 139,
       "hyperspace": false
     },
@@ -93,7 +93,7 @@
       "cost": 38,
       "xws": "cutlasssquadronpilot",
       "text": "The TIE punisher's design builds upon the success of the TIE bomber, adding shielding, a second bomb chute, and three additional ordnance pods, each equipped with a twin ion engine.",
-      "image": "https://sb-cdn.fantasyflightgames.com/card_images/Card_Pilot_141.png",
+      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_141.png",
       "slots": [
         "Sensor",
         "Torpedo",
@@ -104,7 +104,7 @@
         "Modification",
         "Gunner"
       ],
-      "artwork": "https://sb-cdn.fantasyflightgames.com/card_art/Card_art_XW_P_141.jpg",
+      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_141.jpg",
       "ffg": 141,
       "hyperspace": false
     }

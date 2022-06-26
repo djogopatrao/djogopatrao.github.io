@@ -38,7 +38,7 @@
     { "difficulty": "White", "type": "Lock" },
     { "difficulty": "White", "type": "Barrel Roll" }
   ],
-  "icon": "https://sb-cdn.fantasyflightgames.com/ship_types/I_B-wing.png",
+  "icon": "https://squadbuilder.fantasyflightgames.com/ship_types/I_B-wing.png",
   "pilots": [
     {
       "name": "Blade Squadron Veteran",
@@ -47,7 +47,7 @@
       "cost": 43,
       "xws": "bladesquadronveteran",
       "text": "A unique gyrostabilization system surrounds the B-wing's cockpit, ensuring that the pilot always remains stationary during flight.",
-      "image": "https://sb-cdn.fantasyflightgames.com/card_images/Card_Pilot_25.png",
+      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_25.png",
       "slots": [
         "Talent",
         "Sensor",
@@ -56,7 +56,7 @@
         "Torpedo",
         "Modification"
       ],
-      "artwork": "https://sb-cdn.fantasyflightgames.com/card_art/Card_art_XW_P_25.jpg",
+      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_25.jpg",
       "ffg": 25,
       "hyperspace": false
     },
@@ -67,7 +67,7 @@
       "cost": 41,
       "xws": "bluesquadronpilot",
       "text": "Due to its heavy weapons array and resilient shielding, the B-wing has solidified itself as the Rebel Alliance's most innovative assault fighter.",
-      "image": "https://sb-cdn.fantasyflightgames.com/card_images/Card_Pilot_26.png",
+      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_26.png",
       "slots": ["Sensor", "Cannon", "Cannon", "Torpedo", "Modification"],
       "alt": [
         {
@@ -75,7 +75,7 @@
           "source": "Season Three 2018"
         }
       ],
-      "artwork": "https://sb-cdn.fantasyflightgames.com/card_art/Card_art_XW_P_26.jpg",
+      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_26.jpg",
       "ffg": 26,
       "hyperspace": false
     },
@@ -87,7 +87,7 @@
       "cost": 47,
       "xws": "braylenstramm",
       "ability": "While you defend or perform an attack, if you are stressed, you may reroll up to 2 of your dice.",
-      "image": "https://sb-cdn.fantasyflightgames.com/card_images/Card_Pilot_23.png",
+      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_23.png",
       "slots": [
         "Talent",
         "Sensor",
@@ -96,7 +96,7 @@
         "Torpedo",
         "Modification"
       ],
-      "artwork": "https://sb-cdn.fantasyflightgames.com/card_art/Card_art_XW_P_23.jpg",
+      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_23.jpg",
       "ffg": 23,
       "hyperspace": false
     },
@@ -108,7 +108,7 @@
       "cost": 46,
       "xws": "tennumb",
       "ability": "While you defend or perform an attack, you may spend 1 stress token to change all of your [Focus] results to [Evade] or [Hit] results.",
-      "image": "https://sb-cdn.fantasyflightgames.com/card_images/Card_Pilot_24.png",
+      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_24.png",
       "slots": [
         "Talent",
         "Sensor",
@@ -117,7 +117,7 @@
         "Torpedo",
         "Modification"
       ],
-      "artwork": "https://sb-cdn.fantasyflightgames.com/card_art/Card_art_XW_P_24.jpg",
+      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_24.jpg",
       "ffg": 24,
       "hyperspace": false
     }

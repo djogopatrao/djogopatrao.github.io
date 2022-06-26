@@ -30,7 +30,7 @@
     { "difficulty": "White", "type": "Barrel Roll" },
     { "difficulty": "Red", "type": "Coordinate" }
   ],
-  "icon": "https://sb-cdn.fantasyflightgames.com/ship_types/I_EscapeShuttle.png",
+  "icon": "https://squadbuilder.fantasyflightgames.com/ship_types/I_EscapeShuttle.png",
   "pilots": [
     {
       "name": "Autopilot Drone",
@@ -40,7 +40,7 @@
       "cost": 12,
       "xws": "autopilotdrone",
       "text": "Sometimes, manufacturer's warnings are made to be broken.",
-      "image": "https://sb-cdn.fantasyflightgames.com/card_images/Card_Pilot_229.png",
+      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_229.png",
       "charges": { "value": 3, "recovers": 0 },
       "shipActions": [
         { "difficulty": "White", "type": "Calculate" },
@@ -52,7 +52,7 @@
         "text": "During the System Phase, if you are not docked, lose 1 [Charge]. At the end of the Activation Phase, if you have 0 [Charge], you are destroyed. Before you are removed, each ship at range 0-1 suffers 1 [Critical Hit] damage."
       },
       "slots": [],
-      "artwork": "https://sb-cdn.fantasyflightgames.com/card_art/Card_art_XW_P_229.jpg",
+      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_229.jpg",
       "ffg": 229,
       "hyperspace": true
     },
@@ -64,7 +64,7 @@
       "cost": 26,
       "xws": "l337-escapecraft",
       "ability": "If you are not shielded, decrease the difficulty of your bank ([Bank Left] and [Bank Right]) maneuvers.",
-      "image": "https://sb-cdn.fantasyflightgames.com/card_images/Card_Pilot_228.png",
+      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_228.png",
       "shipActions": [
         { "difficulty": "White", "type": "Calculate" },
         { "difficulty": "White", "type": "Barrel Roll" },
@@ -75,7 +75,7 @@
         "text": "While you are docked, your carrier ship has your pilot ability in addition to its own."
       },
       "slots": ["Talent", "Crew", "Modification"],
-      "artwork": "https://sb-cdn.fantasyflightgames.com/card_art/Card_art_XW_P_228.jpg",
+      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_228.jpg",
       "ffg": 228,
       "hyperspace": true
     },
@@ -92,8 +92,8 @@
         "text": "While you are docked, your carrier ship has your pilot ability in addition to its own."
       },
       "slots": ["Talent", "Crew", "Modification"],
-      "image": "https://sb-cdn.fantasyflightgames.com/card_images/Card_Pilot_226.png",
-      "artwork": "https://sb-cdn.fantasyflightgames.com/card_art/Card_art_XW_P_226.jpg",
+      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_226.png",
+      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_226.jpg",
       "ffg": 226,
       "hyperspace": true
     },
@@ -105,13 +105,13 @@
       "cost": 28,
       "xws": "outerrimpioneer",
       "ability": "Friendly ships at range 0-1 can perform attacks at range 0 of obstacles.",
-      "image": "https://sb-cdn.fantasyflightgames.com/card_images/Card_Pilot_227.png",
+      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_227.png",
       "shipAbility": {
         "name": "Co-Pilot",
         "text": "While you are docked, your carrier ship has your pilot ability in addition to its own."
       },
       "slots": ["Talent", "Crew", "Modification"],
-      "artwork": "https://sb-cdn.fantasyflightgames.com/card_art/Card_art_XW_P_227.jpg",
+      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_227.jpg",
       "ffg": 227,
       "hyperspace": true
     }

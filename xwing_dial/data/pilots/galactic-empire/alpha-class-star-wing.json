@@ -29,7 +29,7 @@
   "actions": [
     { "difficulty": "White", "type": "Focus" },
     { "difficulty": "White", "type": "Lock" },
-    { "difficulty": "White", "type": "SLAM" },
+    { "difficulty": "White", "type": "Slam" },
     { "difficulty": "White", "type": "Reload" }
   ],
   "icon": "https://squadbuilder.fantasyflightgames.com/ship_types/I_AlphaStarwing.png",

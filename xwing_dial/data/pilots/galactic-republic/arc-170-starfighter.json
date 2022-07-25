@@ -2,6 +2,7 @@
   "name": "ARC-170 Starfighter",
   "xws": "arc170starfighter",
   "size": "Medium",
+  "icon": "https://squadbuilder.fantasyflightgames.com/ship_types/I_Arc-170.png",
   "dial": [
     "1BB",
     "1FB",

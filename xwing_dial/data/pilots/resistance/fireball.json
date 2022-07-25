@@ -35,7 +35,7 @@
     { "difficulty": "White", "type": "Barrel Roll" },
     { "difficulty": "White", "type": "Slam" }
   ],
-  "icon": "",
+  "icon": "https://squadbuilder.fantasyflightgames.com/ship_types/I_Fireball.png",
   "pilots": [
     {
       "name": "Colossus Station Mechanic",

@@ -36,7 +36,7 @@
     { "difficulty": "Red", "type": "Reinforce" },
     { "difficulty": "White", "type": "Boost" }
   ],
-  "icon": "https://squadbuilder.fantasyflightgames.com/ship_types/I_FIrespray.png",
+  "icon": "https://infinitearenas.com/xw2/images/shipicons/scum-and-villainy/I_FIrespray.png",
   "pilots": [
     {
       "name": "Boba Fett",
@@ -46,7 +46,7 @@
       "cost": 86,
       "xws": "bobafett",
       "ability": "While you defend or perform an attack, you may reroll 1 of your dice for each enemy ship at range 0-1.",
-      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_149.png",
+      "image": "https://infinitearenas.com/card_images/Card_Pilot_149.png",
       "slots": [
         "Talent",
         "Cannon",
@@ -63,7 +63,7 @@
           "source": "Coruscant Invitational 2018"
         }
       ],
-      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_149.jpg",
+      "artwork": "https://infinitearenas.com/card_art/Card_art_XW_P_149.jpg",
       "ffg": 149,
       "hyperspace": true
     },
@@ -74,7 +74,7 @@
       "cost": 66,
       "xws": "bountyhunter",
       "text": "The Firespray-class patrol craft is infamous for its association with the deadly bounty hunters Jango Fett and Boba Fett, who packed their craft with countless deadly armaments.",
-      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_154.png",
+      "image": "https://infinitearenas.com/card_images/Card_Pilot_154.png",
       "slots": [
         "Cannon",
         "Missile",
@@ -84,7 +84,7 @@
         "Modification",
         "Title"
       ],
-      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_154.jpg",
+      "artwork": "https://infinitearenas.com/card_art/Card_art_XW_P_154.jpg",
       "ffg": 154,
       "hyperspace": true
     },
@@ -96,7 +96,7 @@
       "cost": 76,
       "xws": "emonazzameen",
       "ability": "If you would drop a device using a [1 [Straight]] template, you may use the [3 [Turn Left]], [3 [Straight]], or [3 [Turn Right]] template instead.",
-      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_150.png",
+      "image": "https://infinitearenas.com/card_images/Card_Pilot_150.png",
       "slots": [
         "Talent",
         "Cannon",
@@ -107,7 +107,7 @@
         "Modification",
         "Title"
       ],
-      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_150.jpg",
+      "artwork": "https://infinitearenas.com/card_art/Card_art_XW_P_150.jpg",
       "ffg": 150,
       "hyperspace": true
     },
@@ -119,7 +119,7 @@
       "cost": 74,
       "xws": "kathscarlet",
       "ability": "While you perform a primary attack, if there is at least 1 friendly non-limited ship at range 0 of the defender, roll 1 additional attack die.",
-      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_151.png",
+      "image": "https://infinitearenas.com/card_images/Card_Pilot_151.png",
       "slots": [
         "Talent",
         "Cannon",
@@ -130,7 +130,7 @@
         "Modification",
         "Title"
       ],
-      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_151.jpg",
+      "artwork": "https://infinitearenas.com/card_art/Card_art_XW_P_151.jpg",
       "ffg": 151,
       "hyperspace": true
     },
@@ -142,7 +142,7 @@
       "cost": 71,
       "xws": "koshkafrost",
       "ability": "While you defend or perform an attack, if the enemy ship is stressed, you may reroll 1 of your dice.",
-      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_152.png",
+      "image": "https://infinitearenas.com/card_images/Card_Pilot_152.png",
       "slots": [
         "Talent",
         "Cannon",
@@ -153,7 +153,7 @@
         "Modification",
         "Title"
       ],
-      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_152.jpg",
+      "artwork": "https://infinitearenas.com/card_art/Card_art_XW_P_152.jpg",
       "ffg": 152,
       "hyperspace": true
     },
@@ -165,7 +165,7 @@
       "cost": 70,
       "xws": "krassistrelix",
       "ability": "You can perform [Front Arc] special attacks from your [Rear Arc]. While you perform a special attack, you may reroll 1 attack die.",
-      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_153.png",
+      "image": "https://infinitearenas.com/card_images/Card_Pilot_153.png",
       "slots": [
         "Talent",
         "Cannon",
@@ -176,7 +176,7 @@
         "Modification",
         "Title"
       ],
-      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_153.jpg",
+      "artwork": "https://infinitearenas.com/card_art/Card_art_XW_P_153.jpg",
       "ffg": 153,
       "hyperspace": true
     }

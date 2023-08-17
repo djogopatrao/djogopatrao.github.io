@@ -36,7 +36,7 @@
     { "difficulty": "White", "type": "Barrel Roll" },
     { "difficulty": "White", "type": "Boost" }
   ],
-  "icon": "https://squadbuilder.fantasyflightgames.com/ship_types/I_A-wing.png",
+  "icon": "https://infinitearenas.com/xw2/images/shipicons/rebel-alliance/I_A-wing.png",
   "pilots": [
     {
       "name": "Arvel Crynyd",
@@ -46,13 +46,13 @@
       "cost": 34,
       "xws": "arvelcrynyd",
       "ability": "You can perform primary attacks at range 0. If you would fail a [Boost] action by overlapping another ship, resolve it as though you were partially executing a maneuver instead.",
-      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_20.png",
+      "image": "https://infinitearenas.com/card_images/Card_Pilot_20.png",
       "shipAbility": {
         "name": "Vectored Thrusters",
         "text": "After you perform an action, you may perform a red [Boost] action."
       },
       "slots": ["Talent", "Talent", "Missile"],
-      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_20.jpg",
+      "artwork": "https://infinitearenas.com/card_art/Card_art_XW_P_20.jpg",
       "ffg": 20,
       "hyperspace": false
     },
@@ -63,13 +63,13 @@
       "cost": 32,
       "xws": "greensquadronpilot",
       "text": "Due to its sensitive controls and high maneuverability, only the most talented pilots belong in an A-wing cockpit.",
-      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_21.png",
+      "image": "https://infinitearenas.com/card_images/Card_Pilot_21.png",
       "shipAbility": {
         "name": "Vectored Thrusters",
         "text": "After you perform an action, you may perform a red [Boost] action."
       },
       "slots": ["Talent", "Talent", "Missile"],
-      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_21.jpg",
+      "artwork": "https://infinitearenas.com/card_art/Card_art_XW_P_21.jpg",
       "ffg": 21,
       "hyperspace": false
     },
@@ -81,13 +81,13 @@
       "cost": 36,
       "xws": "jakefarrell",
       "ability": "After you perform a [Barrel Roll] or [Boost] action, you may choose a friendly ship at range 0-1. That ship may perform a [Focus] action.",
-      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_19.png",
+      "image": "https://infinitearenas.com/card_images/Card_Pilot_19.png",
       "shipAbility": {
         "name": "Vectored Thrusters",
         "text": "After you perform an action, you may perform a red [Boost] action."
       },
       "slots": ["Talent", "Talent", "Missile"],
-      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_19.jpg",
+      "artwork": "https://infinitearenas.com/card_art/Card_art_XW_P_19.jpg",
       "ffg": 19,
       "hyperspace": false
     },
@@ -98,13 +98,13 @@
       "cost": 30,
       "xws": "phoenixsquadronpilot",
       "text": "Led by Commander Jun Sato, the brave but inexperienced pilots of Phoenix Squadron face staggering odds in their battle against the Galactic Empire.",
-      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_22.png",
+      "image": "https://infinitearenas.com/card_images/Card_Pilot_22.png",
       "shipAbility": {
         "name": "Vectored Thrusters",
         "text": "After you perform an action, you may perform a red [Boost] action."
       },
       "slots": ["Talent", "Missile"],
-      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_22.jpg",
+      "artwork": "https://infinitearenas.com/card_art/Card_art_XW_P_22.jpg",
       "ffg": 22,
       "hyperspace": false
     }

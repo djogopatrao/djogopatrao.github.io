@@ -42,7 +42,7 @@
     { "difficulty": "White", "type": "Rotate Arc" },
     { "difficulty": "Red", "type": "Jam" }
   ],
-  "icon": "https://squadbuilder.fantasyflightgames.com/ship_types/I_HWK-290.png",
+  "icon": "https://infinitearenas.com/xw2/images/shipicons/scum-and-villainy/I_HWK-290.png",
   "pilots": [
     {
       "name": "Dace Bonearm",
@@ -52,7 +52,7 @@
       "cost": 35,
       "xws": "dacebonearm",
       "ability": "After an enemy ship at range 0-3 receives at least 1 ion token, you may spend 3 [Charge]. If you do, that ship gains 2 additional ion tokens.",
-      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_174.png",
+      "image": "https://infinitearenas.com/card_images/Card_Pilot_174.png",
       "charges": { "value": 3, "recovers": 1 },
       "slots": [
         "Talent",
@@ -63,7 +63,7 @@
         "Modification",
         "Title"
       ],
-      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_174.jpg",
+      "artwork": "https://infinitearenas.com/card_art/Card_art_XW_P_174.jpg",
       "ffg": 174,
       "hyperspace": false
     },
@@ -75,7 +75,7 @@
       "cost": 40,
       "xws": "palobgodalhi",
       "ability": "At the start of the Engagement Phase, you may choose 1 enemy ship in your firing arc at range 0-2. If you do, transfer 1 focus or evade token from that ship to yourself.",
-      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_175.png",
+      "image": "https://infinitearenas.com/card_images/Card_Pilot_175.png",
       "slots": [
         "Talent",
         "Crew",
@@ -85,7 +85,7 @@
         "Modification",
         "Title"
       ],
-      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_175.jpg",
+      "artwork": "https://infinitearenas.com/card_art/Card_art_XW_P_175.jpg",
       "ffg": 175,
       "hyperspace": false
     },
@@ -96,7 +96,7 @@
       "cost": 32,
       "xws": "spicerunner",
       "text": "Though its cargo space is limited compared to other light freighters, the small, swift HWK-290 is a favorite choice of smugglers who specialize in discreetly transporting precious goods.",
-      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_177.png",
+      "image": "https://infinitearenas.com/card_images/Card_Pilot_177.png",
       "slots": [
         "Crew",
         "Device",
@@ -105,7 +105,7 @@
         "Modification",
         "Title"
       ],
-      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_177.jpg",
+      "artwork": "https://infinitearenas.com/card_art/Card_art_XW_P_177.jpg",
       "ffg": 177,
       "hyperspace": false
     },
@@ -117,7 +117,7 @@
       "cost": 38,
       "xws": "torkilmux",
       "ability": "At the start of the Engagement Phase, you may choose 1 ship in your firing arc. If you do, that ship engages at initiative 0 instead of its normal initiative value this round.",
-      "image": "https://squadbuilder.fantasyflightgames.com/card_images/Card_Pilot_176.png",
+      "image": "https://infinitearenas.com/card_images/Card_Pilot_176.png",
       "slots": [
         "Crew",
         "Device",
@@ -126,7 +126,7 @@
         "Modification",
         "Title"
       ],
-      "artwork": "https://squadbuilder.fantasyflightgames.com/card_art/Card_art_XW_P_176.jpg",
+      "artwork": "https://infinitearenas.com/card_art/Card_art_XW_P_176.jpg",
       "ffg": 176,
       "hyperspace": false
     }

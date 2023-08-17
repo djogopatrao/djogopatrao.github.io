@@ -2,7 +2,7 @@
   "factions": [
     {
       "name": "Rebel Alliance",
-      "icon": "https://squadbuilder.fantasyflightgames.com/factions/Rebel.png",
+      "icon": "https://infinitearenas.com/xw2/images/artwork/faction-icons/Rebel.png",
       "path": "rebel-alliance",
       "ships": [
         {
@@ -77,7 +77,7 @@
     },
     {
       "name": "Galactic Empire",
-      "icon": "https://squadbuilder.fantasyflightgames.com/factions/Imperial.png",
+      "icon": "https://infinitearenas.com/xw2/images/artwork/faction-icons/Imperial.png",
       "path": "galactic-empire",
       "ships": [
         {
@@ -140,7 +140,7 @@
     },
     {
       "name": "Scum and Villainy",
-      "icon": "https://squadbuilder.fantasyflightgames.com/factions/Scum.png",
+      "icon": "https://infinitearenas.com/xw2/images/artwork/faction-icons/Scum.png",
       "path": "scum-and-villainy",
       "ships": [
         {
@@ -223,7 +223,7 @@
     },
     {
       "name": "Resistance",
-      "icon": "https://squadbuilder.fantasyflightgames.com/factions/ResistanceIcon.png",
+      "icon": "https://infinitearenas.com/xw2/images/artwork/faction-icons/ResistanceIcon.png",
       "path": "resistance",
       "ships": [
         {
@@ -258,7 +258,7 @@
     },
     {
       "name": "First Order",
-      "icon": "https://squadbuilder.fantasyflightgames.com/factions/FirstOrderIcon.png",
+      "icon": "https://infinitearenas.com/xw2/images/artwork/faction-icons/FirstOrderIcon.png",
       "path": "first-order",
       "ships": [
         {
@@ -285,7 +285,7 @@
     },
     {
       "name": "Galactic Republic",
-      "icon": "https://squadbuilder.fantasyflightgames.com/factions/RepublicIcon.png",
+      "icon": "https://infinitearenas.com/xw2/images/artwork/faction-icons/RepublicIcon.png",
       "path": "galactic-republic",
       "ships": [
         {
@@ -312,7 +312,7 @@
     },
     {
       "name": "Separatist Alliance",
-      "icon": "https://squadbuilder.fantasyflightgames.com/factions/SeparatistIcon.png",
+      "icon": "https://infinitearenas.com/xw2/images/artwork/faction-icons/SeparatistIcon.png",
       "path": "separatist-alliance",
       "ships": [
         {
